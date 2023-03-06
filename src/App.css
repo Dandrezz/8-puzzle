@@ -6,4 +6,11 @@
     background-color: #219ebc;
     align-items: center;
     user-select: none;
+    border: solid 4px #219ebc;
+}
+
+.section:hover{
+    color: #219ebc;
+    background-color: #8ECAE6;
+    border: solid 4px #219ebc;
 }
