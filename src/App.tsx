@@ -1,60 +1,66 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 
+const stateGame = {
+	1: {
+		x: 0,
+		y: 0,
+	},
+	2: {
+		x: 0,
+		y: 1,
+	},
+	3: {
+		x: 0,
+		y: 2,
+	},
+	4: {
+		x: 1,
+		y: 0,
+	},
+	5: {
+		x: 1,
+		y: 1,
+	},
+	6: {
+		x: 1,
+		y: 2,
+	},
+	7: {
+		x: 2,
+		y: 0,
+	},
+	8: {
+		x: 2,
+		y: 1,
+	},
+	0: {
+		x: 2,
+		y: 2,
+	}
+}
+
+const dataState: number[][] = [
+	[1, 2, 3],
+	[4, 5, 6],
+	[7, 8, 0]
+]
+
 function App() {
 
 	const validKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd']
 
-	const stateGame = {
-		1: {
-			x: 0,
-			y: 0,
-		},
-		2: {
-			x: 0,
-			y: 1,
-		},
-		3: {
-			x: 0,
-			y: 2,
-		},
-		4: {
-			x: 1,
-			y: 0,
-		},
-		5: {
-			x: 1,
-			y: 1,
-		},
-		6: {
-			x: 1,
-			y: 2,
-		},
-		7: {
-			x: 2,
-			y: 0,
-		},
-		8: {
-			x: 2,
-			y: 1,
-		},
-		0: {
-			x: 2,
-			y: 2,
-		}
-	}
-
-	const dataState: number[][] = [
-		[1, 2, 3],
-		[4, 5, 6],
-		[7, 8, 0]
-	]
 
 	const handlePressKey = (e: KeyboardEvent) => {
-		if (validKeys.includes(e.key)) {
+		moveToken(e.key)
+	}
+	
+	const moveToken = (key: string) => {
+		console.log(key)
+		if (validKeys.includes(key)) {
 			const { x, y } = stateGame[0]
 			let target = -1;
-			if (e.key === 'ArrowUp' || e.key === 'w') {
+			if (key === 'ArrowUp' || key === 'w') {
 				const newX = x + 1
 				if (newX < 3) {
 					target = dataState[newX][y]
@@ -64,7 +70,7 @@ function App() {
 					stateGame[target].x = stateGame[0].x
 					stateGame[0].x = newX
 				}
-			} else if (e.key === 'ArrowDown' || e.key === 's') {
+			} else if (key === 'ArrowDown' || key === 's') {
 				const newX = x - 1
 				if (newX >= 0) {
 					target = dataState[newX][y]
@@ -74,7 +80,7 @@ function App() {
 					stateGame[target].x = stateGame[0].x
 					stateGame[0].x = newX
 				}
-			} else if (e.key === 'ArrowLeft' || e.key === 'a') {
+			} else if (key === 'ArrowLeft' || key === 'a') {
 				const newY = y + 1
 				if (newY < 3) {
 					target = dataState[x][newY]
@@ -84,7 +90,7 @@ function App() {
 					stateGame[target].y = stateGame[0].y
 					stateGame[0].y = newY
 				}
-			} else if (e.key === 'ArrowRight' || e.key === 'd') {
+			} else if (key === 'ArrowRight' || key === 'd') {
 				const newY = y - 1
 				if (newY >= 0){
 					target = dataState[x][newY]
@@ -96,6 +102,16 @@ function App() {
 				}
 			}
 			setDataTable(dataState.flat())
+		}
+	}
+	
+	function getRandomInt(max:number) {
+		return Math.floor(Math.random() * max);
+	}
+
+	const handleShuffle = async() => {
+		for (let index = 0; index < 10; index++) {
+			moveToken(validKeys[getRandomInt(4)])
 		}
 	}
 
@@ -125,7 +141,9 @@ function App() {
 					})
 				}
 			</div>
-			<button className="text-white rounded-lg section mt-5 w-72 mx-auto text-2xl h-12">Shuffle</button>
+			<button
+				onClick={handleShuffle} 
+				className="text-white rounded-lg section mt-5 w-72 mx-auto text-2xl h-12">Shuffle</button>
 		</div>
 	)
 }
