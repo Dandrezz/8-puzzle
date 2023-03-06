@@ -1,7 +1,16 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 
-const stateGame = {
+interface IPoint {
+	x: number,
+	y: number,
+}
+
+interface IStateGame {
+	[key: number]: IPoint
+}
+
+const stateGame:IStateGame = {
 	1: {
 		x: 0,
 		y: 0,
@@ -115,6 +124,26 @@ function App() {
 		}
 	}
 
+	const isAdjacentPoint = (x1: number, y1: number, x2: number, y2: number):boolean => {
+		return (Math.abs(y1 - y2) + Math.abs(x1 - x2) === 1)
+	}
+
+	const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		const target = parseInt(e.currentTarget.innerText)
+		const { x, y } = stateGame[target]
+		const { x: x0, y: y0 } = stateGame[0]
+		if (isAdjacentPoint(x, y, x0, y0)) {
+			const temp = dataState[x][y]
+			dataState[x][y] = dataState[x0][y0]
+			dataState[x0][y0] = temp
+			stateGame[target].x = x0
+			stateGame[target].y = y0
+			stateGame[0].x = x
+			stateGame[0].y = y
+			setDataTable(dataState.flat())
+		}
+	}
+
 	const [dataTable, setDataTable] = useState(dataState.flat())
 
 	useEffect(() => {
@@ -133,6 +162,7 @@ function App() {
 							item !== 0 ?
 								<div
 									key={item}
+									onClick={handleClick}
 									className='section text-5xl text-white rounded-lg align-middle'>
 									{item}
 								</div> :
