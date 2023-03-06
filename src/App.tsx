@@ -71,6 +71,7 @@ function App() {
 	}
 
 	const handlePressKey = (e: KeyboardEvent) => {
+		if (!validKeys.includes(e.key)) return
 		moveToken(e.key)
 		validWin()
 	}
@@ -165,9 +166,9 @@ function App() {
 	return (
 		<div
 			className="max-w-xl m-auto grid grid-cols-1 place-content-center w-full h-screen p-4 text-center">
-			<h1 className='text-6xl text-white mb-5'>8-Puzzle Game</h1>
-			{isExploding && <ConfettiExplosion />}
-			<motion.div  className='grid grid-cols-3 gap-4 p-5 rounded-lg justify-items-stretch w-96 h-96 mx-auto'>
+			<h1 className='text-6xl text-white mb-5'>8 Puzzle Game</h1>
+			{isExploding && <ConfettiExplosion particleCount={15} />}
+			<motion.div  className='grid grid-cols-3 gap-4 p-5 rounded-lg justify-items-stretch sm:w-96 sm:h-96 w-72 h-72 mx-auto'>
 				{
 					dataTable.map((item) => {
 						return (
