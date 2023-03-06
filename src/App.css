@@ -1,0 +1,9 @@
+.section{
+    text-align: center;
+    color: #8ECAE6;
+    font-size: 40px;
+    top: 50%;
+    background-color: #219ebc;
+    align-items: center;
+    user-select: none;
+}
