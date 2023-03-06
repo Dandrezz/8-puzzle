@@ -119,7 +119,7 @@ function App() {
 	}
 
 	const handleShuffle = async() => {
-		for (let index = 0; index < 10; index++) {
+		for (let index = 0; index < 16; index++) {
 			moveToken(validKeys[getRandomInt(4)])
 		}
 	}
@@ -152,10 +152,9 @@ function App() {
 
 	return (
 		<div
-			className="max-w-xl m-auto grid grid-cols-1 place-content-center w-full h-screen p-4 text-center"
-			style={{ backgroundColor: '#FFB703' }}>
+			className="max-w-xl m-auto grid grid-cols-1 place-content-center w-full h-screen p-4 text-center">
 			<h1 className='text-6xl text-white mb-5'>8-Puzzle Game</h1>
-			<div className='grid grid-cols-3 gap-4 p-5 rounded-lg justify-items-stretch w-96 h-96 mx-auto' style={{ backgroundColor: '#023047' }}>
+			<div className='grid grid-cols-3 gap-4 p-5 rounded-lg justify-items-stretch w-96 h-96 mx-auto'>
 				{
 					dataTable.map((item) => {
 						return (
