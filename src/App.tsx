@@ -12,7 +12,7 @@ interface IStateGame {
 	[key: number]: IPoint
 }
 
-const stateGame:IStateGame = {
+const stateGame: IStateGame = {
 	1: {
 		x: 0,
 		y: 0,
@@ -57,7 +57,7 @@ const dataState: number[][] = [
 	[7, 8, 0]
 ]
 
-const stateSolve = [1,2,3,4,5,6,7,8,0]
+const stateSolve = [1, 2, 3, 4, 5, 6, 7, 8, 0]
 
 function App() {
 
@@ -66,7 +66,7 @@ function App() {
 	const validKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd']
 
 	const validWin = () => {
-		if(dataState.flat().toString() === stateSolve.toString())
+		if (dataState.flat().toString() === stateSolve.toString())
 			setIsExploding(true)
 	}
 
@@ -75,7 +75,7 @@ function App() {
 		moveToken(e.key)
 		validWin()
 	}
-	
+
 	const moveToken = (key: string) => {
 		if (validKeys.includes(key)) {
 			const { x, y } = stateGame[0]
@@ -112,7 +112,7 @@ function App() {
 				}
 			} else if (key === 'ArrowRight' || key === 'd') {
 				const newY = y - 1
-				if (newY >= 0){
+				if (newY >= 0) {
 					target = dataState[x][newY]
 					const temp = dataState[x][y]
 					dataState[x][y] = dataState[x][newY]
@@ -125,17 +125,17 @@ function App() {
 		}
 	}
 
-	function getRandomInt(max:number) {
+	function getRandomInt(max: number) {
 		return Math.floor(Math.random() * max);
 	}
 
-	const handleShuffle = async() => {
+	const handleShuffle = async () => {
 		for (let index = 0; index < 24; index++) {
 			moveToken(validKeys[getRandomInt(4)])
 		}
 	}
 
-	const isAdjacentPoint = (x1: number, y1: number, x2: number, y2: number):boolean => {
+	const isAdjacentPoint = (x1: number, y1: number, x2: number, y2: number): boolean => {
 		return (Math.abs(y1 - y2) + Math.abs(x1 - x2) === 1)
 	}
 
@@ -165,10 +165,10 @@ function App() {
 
 	return (
 		<div
-			className="max-w-xl m-auto grid grid-cols-1 place-content-center w-full h-screen p-4 text-center">
+			className="max-w-xl m-auto grid grid-cols-1 place-content-center w-screen h-screen p-4 text-center">
 			<h1 className='text-6xl text-white mb-5'>8 Puzzle Game</h1>
 			{isExploding && <ConfettiExplosion particleCount={15} />}
-			<motion.div  className='grid grid-cols-3 gap-4 p-5 rounded-lg justify-items-stretch sm:w-96 sm:h-96 w-72 h-72 mx-auto'>
+			<motion.div className='grid grid-cols-3 gap-4 p-5 rounded-lg justify-items-stretch sm:w-96 sm:h-96 w-72 h-72 mx-auto'>
 				{
 					dataTable.map((item) => {
 						return (
@@ -186,8 +186,12 @@ function App() {
 				}
 			</motion.div>
 			<button
-				onClick={handleShuffle} 
+				onClick={handleShuffle}
 				className="text-white rounded-lg section mt-5 w-72 mx-auto text-2xl h-12">Shuffle</button>
+
+			<footer className="flex justify-center items-center gap-x-2 font-semibold pt-10 text-white">
+				Hecho con <span className="text-red-500">❤</span> por Diego
+			</footer>
 		</div>
 	)
 }
