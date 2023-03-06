@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
+import ConfettiExplosion from 'react-confetti-explosion';
 import './App.css'
 
 interface IPoint {
@@ -55,17 +57,25 @@ const dataState: number[][] = [
 	[7, 8, 0]
 ]
 
+const stateSolve = [1,2,3,4,5,6,7,8,0]
+
 function App() {
+
+	const [isExploding, setIsExploding] = useState(false);
 
 	const validKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd']
 
+	const validWin = () => {
+		if(dataState.flat().toString() === stateSolve.toString())
+			setIsExploding(true)
+	}
 
 	const handlePressKey = (e: KeyboardEvent) => {
 		moveToken(e.key)
+		validWin()
 	}
 	
 	const moveToken = (key: string) => {
-		console.log(key)
 		if (validKeys.includes(key)) {
 			const { x, y } = stateGame[0]
 			let target = -1;
@@ -113,13 +123,13 @@ function App() {
 			setDataTable(dataState.flat())
 		}
 	}
-	
+
 	function getRandomInt(max:number) {
 		return Math.floor(Math.random() * max);
 	}
 
 	const handleShuffle = async() => {
-		for (let index = 0; index < 16; index++) {
+		for (let index = 0; index < 24; index++) {
 			moveToken(validKeys[getRandomInt(4)])
 		}
 	}
@@ -129,6 +139,7 @@ function App() {
 	}
 
 	const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		setIsExploding(false)
 		const target = parseInt(e.currentTarget.innerText)
 		const { x, y } = stateGame[target]
 		const { x: x0, y: y0 } = stateGame[0]
@@ -142,6 +153,7 @@ function App() {
 			stateGame[0].y = y
 			setDataTable(dataState.flat())
 		}
+		validWin()
 	}
 
 	const [dataTable, setDataTable] = useState(dataState.flat())
@@ -154,22 +166,24 @@ function App() {
 		<div
 			className="max-w-xl m-auto grid grid-cols-1 place-content-center w-full h-screen p-4 text-center">
 			<h1 className='text-6xl text-white mb-5'>8-Puzzle Game</h1>
-			<div className='grid grid-cols-3 gap-4 p-5 rounded-lg justify-items-stretch w-96 h-96 mx-auto'>
+			{isExploding && <ConfettiExplosion />}
+			<motion.div  className='grid grid-cols-3 gap-4 p-5 rounded-lg justify-items-stretch w-96 h-96 mx-auto'>
 				{
 					dataTable.map((item) => {
 						return (
 							item !== 0 ?
-								<div
+								<motion.div
+									layout
 									key={item}
 									onClick={handleClick}
 									className='section text-5xl text-white rounded-lg align-middle'>
 									{item}
-								</div> :
-								<div key={item}></div>
+								</motion.div> :
+								<motion.div layout key={item}></motion.div>
 						)
 					})
 				}
-			</div>
+			</motion.div>
 			<button
 				onClick={handleShuffle} 
 				className="text-white rounded-lg section mt-5 w-72 mx-auto text-2xl h-12">Shuffle</button>
