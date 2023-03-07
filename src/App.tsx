@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import ConfettiExplosion from 'react-confetti-explosion';
 import './App.css'
+import Swal from 'sweetalert2';
 
 interface IPoint {
 	x: number,
 	y: number,
+	img?: string
 }
 
 interface IStateGame {
@@ -62,6 +64,15 @@ const stateSolve = [1, 2, 3, 4, 5, 6, 7, 8, 0]
 function App() {
 
 	const [isExploding, setIsExploding] = useState(false);
+	const [imagen, setImagen] = useState(null)
+	const [transformationParams, setTransformationParams] = useState({
+		crop: 'crop',
+		x: '0',
+		y: '0',
+		width: '33.33%',
+		height: '33.33%'
+	});
+
 
 	const validKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd']
 
@@ -163,6 +174,50 @@ function App() {
 		document.addEventListener('keydown', handlePressKey)
 	}, [])
 
+	const handleUploadImage = async () => {
+
+		const { value: file } = await Swal.fire({
+			title: 'Select image',
+			input: 'file',
+			inputAttributes: {
+				'accept': 'image/*',
+				'aria-label': 'Upload your profile picture'
+			}
+		})
+
+		console.log(file)
+
+		const data = new FormData()
+		data.append('file', file)
+		data.append('upload_preset', 'aqjx77cr')
+
+		console.log(file)
+
+		fetch("https://api.cloudinary.com/v1_1/dqvtr77op/image/upload", {
+			method: "post",
+			body: data
+		}).then(res => res.json())
+			.then(data => {
+				console.log(data)
+				setImagen(data.url)
+				const { width, height } = data
+
+				const nameFile = data.url.split('/').pop()
+				for (let index = 1; index < 4; index++) {
+					
+					stateGame[index].img = `http://res.cloudinary.com/dqvtr77op/image/upload/x_${~~(width*(1/3)*(index-1))},y_${0},w_${~~(width/3)},h_${~~(height/3)},c_crop/${nameFile}`
+					stateGame[index+3].img = `http://res.cloudinary.com/dqvtr77op/image/upload/x_${~~(width*(1/3)*(index-1))},y_${~~(height*(1/3))},w_${~~(width/3)},h_${~~(height/3)},c_crop/${nameFile}`
+					if(index!=3)stateGame[index+6].img = `http://res.cloudinary.com/dqvtr77op/image/upload/x_${~~(width*(1/3)*(index-1))},y_${~~(height*(2/3))},w_${~~(width/3)},h_${~~(height/3)},c_crop/${nameFile}`
+
+				}
+
+			})
+			.catch(err => {
+				console.log(err)
+			})
+
+	}
+
 	return (
 		<div
 			className="max-w-xl m-auto grid grid-cols-1 place-content-center w-screen h-screen p-4 text-center">
@@ -177,8 +232,8 @@ function App() {
 									layout
 									key={item}
 									onClick={handleClick}
-									className='section text-5xl text-white rounded-lg align-middle'>
-									{item}
+									className='section text-5xl text-white rounded-lg'>
+									{stateGame[item].img ? <img src={stateGame[item].img} alt="imagen" /> : item}
 								</motion.div> :
 								<motion.div layout key={item}></motion.div>
 						)
@@ -188,6 +243,9 @@ function App() {
 			<button
 				onClick={handleShuffle}
 				className="text-white rounded-lg section mt-5 w-72 mx-auto text-2xl h-12">Shuffle</button>
+			<button
+				onClick={handleUploadImage}
+				className="text-white rounded-lg section mt-5 w-72 mx-auto text-2xl h-12">Upload Image</button>
 
 			<footer className="flex justify-center items-center gap-x-2 font-semibold pt-10 text-white">
 				Hecho con <span className="text-red-500">❤</span> por Diego
