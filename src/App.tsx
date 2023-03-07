@@ -220,10 +220,10 @@ function App() {
 
 	return (
 		<div
-			className="max-w-xl m-auto grid grid-cols-1 place-content-center w-screen h-screen p-4 text-center">
-			<h1 className='text-6xl text-white mb-5'>8 Puzzle Game</h1>
+			className="max-w-xl m-auto grid grid-cols-1 2xl:place-content-center w-screen h-screen p-4 text-center">
+			<h1 className='2xl:text-6xl text-2xl font-bold text-white mb-5'>8 Puzzle Game</h1>
 			{isExploding && <ConfettiExplosion particleCount={15} />}
-			<motion.div className='grid grid-cols-3 gap-4 p-5 rounded-lg justify-items-stretch sm:w-96 sm:h-96 w-72 h-72 mx-auto'>
+			<motion.div className='grid grid-cols-3 gap-4 p-5 rounded-lg justify-items-stretch 2xl:w-96 2xl:h-96 xl:w-80 xl:h-80 w-72 h-72 mx-auto'>
 				{
 					dataTable.map((item) => {
 						return (
@@ -242,10 +242,10 @@ function App() {
 			</motion.div>
 			<button
 				onClick={handleShuffle}
-				className="text-white rounded-lg section mt-5 w-72 mx-auto text-2xl h-12">Shuffle</button>
+				className="text-white rounded-lg section mt-5 2xl:w-72 w-52 mx-auto 2xl:text-2xl text-xl 2xl:h-12 h-9">Shuffle</button>
 			<button
 				onClick={handleUploadImage}
-				className="text-white rounded-lg section mt-5 w-72 mx-auto text-2xl h-12">Upload Image</button>
+				className="text-white rounded-lg section mt-5 2xl:w-72 w-52 mx-auto 2xl:text-2xl text-xl 2xl:h-12 h-9">Upload Image</button>
 
 			<footer className="flex justify-center items-center gap-x-2 font-semibold pt-10 text-white">
 				Hecho con <span className="text-red-500">❤</span> por Diego
