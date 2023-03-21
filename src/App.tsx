@@ -64,15 +64,6 @@ const stateSolve = [1, 2, 3, 4, 5, 6, 7, 8, 0]
 function App() {
 
 	const [isExploding, setIsExploding] = useState(false);
-	const [imagen, setImagen] = useState(null)
-	const [transformationParams, setTransformationParams] = useState({
-		crop: 'crop',
-		x: '0',
-		y: '0',
-		width: '33.33%',
-		height: '33.33%'
-	});
-
 
 	const validKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd']
 
@@ -185,37 +176,26 @@ function App() {
 			}
 		})
 
-		console.log(file)
-
 		const data = new FormData()
 		data.append('file', file)
 		data.append('upload_preset', 'aqjx77cr')
-
-		console.log(file)
 
 		fetch("https://api.cloudinary.com/v1_1/dqvtr77op/image/upload", {
 			method: "post",
 			body: data
 		}).then(res => res.json())
 			.then(data => {
-				console.log(data)
-				setImagen(data.url)
 				const { width, height } = data
-
 				const nameFile = data.url.split('/').pop()
 				for (let index = 1; index < 4; index++) {
-					
 					stateGame[index].img = `http://res.cloudinary.com/dqvtr77op/image/upload/x_${~~(width*(1/3)*(index-1))},y_${0},w_${~~(width/3)},h_${~~(height/3)},c_crop/${nameFile}`
 					stateGame[index+3].img = `http://res.cloudinary.com/dqvtr77op/image/upload/x_${~~(width*(1/3)*(index-1))},y_${~~(height*(1/3))},w_${~~(width/3)},h_${~~(height/3)},c_crop/${nameFile}`
 					if(index!=3)stateGame[index+6].img = `http://res.cloudinary.com/dqvtr77op/image/upload/x_${~~(width*(1/3)*(index-1))},y_${~~(height*(2/3))},w_${~~(width/3)},h_${~~(height/3)},c_crop/${nameFile}`
-
 				}
-
 			})
 			.catch(err => {
 				console.log(err)
 			})
-
 	}
 
 	return (
