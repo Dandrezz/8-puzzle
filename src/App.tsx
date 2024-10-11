@@ -141,9 +141,9 @@ function App() {
 		return (Math.abs(y1 - y2) + Math.abs(x1 - x2) === 1)
 	}
 
-	const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+	const handleClick = (index:number) => {
 		setIsExploding(false)
-		const target = parseInt(e.currentTarget.innerText)
+		const target = index
 		const { x, y } = stateGame[target]
 		const { x: x0, y: y0 } = stateGame[0]
 		if (isAdjacentPoint(x, y, x0, y0)) {
@@ -211,7 +211,7 @@ function App() {
 								<motion.div
 									layout
 									key={item}
-									onClick={handleClick}
+									onClick={()=>handleClick(item)}
 									className='section text-5xl text-white rounded-lg'>
 									{stateGame[item].img ? <img src={stateGame[item].img} alt="imagen" /> : item}
 								</motion.div> :
